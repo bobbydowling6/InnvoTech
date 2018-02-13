@@ -1,6 +1,6 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿.img-thumbnail {
+    height: 250px;
+    width: 250px;
 }
 
 /* Wrapping element */
