@@ -10,9 +10,14 @@
             <img src="@Model.ImageUrl" alt="@Model.Name" class="img-thumbnail" />
         </div>
         <div class="col-7">
-            <h3><strong>@Model.Name</strong></h3>
-            <p>@Model.Description</p>
-            <p>@((Model.Price).ToString("C"))</p>
+            <dl>
+                <dt>Name</dt>
+                <dd>@Model.Name</dd>
+                <dt>Description</dt>
+                <dd>@Model.Description</dd>
+                <dt>Price</dt>
+                <dd>@((Model.Price).ToString("C"))</dd>
+            </dl>
             <button type="submit" class="btn btn-primary">Add to Cart</button>
         </div>
     </div>
