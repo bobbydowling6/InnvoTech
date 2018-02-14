@@ -24,7 +24,6 @@ namespace InnvoTech.Controllers
         {
             return this.View(new {MyProperty = "MyValue" });
 
-            return View();
         }
     }
 }
