@@ -20,6 +20,7 @@ namespace InnvoTech.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Index(DeliveryViewModel models)
         {
             return this.View(new {MyProperty = "MyValue" });

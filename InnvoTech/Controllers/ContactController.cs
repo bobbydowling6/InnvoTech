@@ -16,6 +16,7 @@ namespace InnvoTech.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Index(ContactViewModel models)
         {
             return RedirectToAction("Index", "Home");
