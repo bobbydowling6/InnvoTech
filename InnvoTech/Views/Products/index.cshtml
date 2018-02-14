@@ -6,16 +6,17 @@
 <div class="jumbotron">
     <div class="container">
 <h2>Gadgets</h2>
-    <div class="row">
-        <div class="col-5">
-            <img src="@Model.ImageUrl" alt="@Model.Name" class="img-thumbnail" />
-        </div>
-        <div class="col-7">
-            <h3><strong>@Model.Name</strong></h3>
-            <p>@Model.Description</p>
-            <p>@Model.Color</p>
-            <p>@((Model.Price).ToString("C"))</p>
-        </div>
+<div class="row">
+    <div class="col-5">
+        <img src="@Model.ImageUrl" alt="@Model.Name" class="img-thumbnail" />
     </div>
+    <div class="col-7">
+        <h3><strong>@Model.Name</strong></h3>
+        <p>@Model.Description</p>
+        <p>@((Model.Price).ToString("C"))</p>
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+
+    </div>
+</div>
 </div>
 </div>
