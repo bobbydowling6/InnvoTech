@@ -12,6 +12,10 @@ namespace InnvoTech.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            string gadgetName = "your cool gadget";
+            Request.Cookies.TryGetValue("productID", out gadgetName);
+            ViewData["gadgetName"] = gadgetName;
+
             return View();
         }
         [HttpPost]

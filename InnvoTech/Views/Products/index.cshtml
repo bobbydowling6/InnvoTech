@@ -18,7 +18,10 @@
                 <dt>Price</dt>
                 <dd>@((Model.Price).ToString("C"))</dd>
             </dl>
-            <button type="submit" class="btn btn-primary">Add to Cart</button>
+            <form asp-action="index" asp-controller="Products" method="post">
+                <input type="hidden" name="id" value="@Model.Name" />
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </form>
         </div>
     </div>
 </div>
