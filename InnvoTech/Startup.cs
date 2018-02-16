@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace InnvoTech
 {
@@ -23,6 +26,13 @@ namespace InnvoTech
         {
             services.AddMvc();
             services.AddAntiforgery();
+            services.AddSession();
+
+            services.AddDbContext<IdentityDbContext>(opt => opt.UseInMemoryDatabase("Identities"));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,7 +40,7 @@ namespace InnvoTech
         {
             if (env.IsDevelopment())
             {
-                //app.UseBrowserLink();
+                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -39,6 +49,10 @@ namespace InnvoTech
             }
 
             app.UseStaticFiles();
+
+            app.UseSession();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
