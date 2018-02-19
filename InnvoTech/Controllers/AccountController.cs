@@ -46,35 +46,26 @@ namespace InnvoTech.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser(username);
-                var Result = _signInManager.UserManager.GetUserAsync(User).Result;
-                if (Result.Succeeded)
+                IdentityUser existingUser = _signInManager.UserManager.FindByNameAsync(username).Result;
+                if (existingUser != null)
                 {
-                    var passwordResult = _signInManager.UserManager.AddPasswordAsync(user, password).Result;
-                    if (passwordResult.Succeeded)
+                    if (_signInManager.UserManager.CheckPasswordAsync(existingUser, password).Result)
                     {
-                        _signInManager.SignInAsync(user, false).Wait();
-                        return RedirectToAction("Index", "home");
+                        _signInManager.SignInAsync(existingUser, false);
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        foreach (var error in passwordResult.Errors)
-                        {
-                            ModelState.AddModelError(error.Code, error.Description);
-                        }
-                        _signInManager.UserManager.DeleteAsync(user).Wait();
+                        ModelState.AddModelError("username", "Username or password is incorrect");
                     }
                 }
                 else
                 {
-                    foreach (var error in Result.Errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
+                    ModelState.AddModelError("username", "Username or password is incorrect");
                 }
             }
             return View();
-        }    
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -36,6 +36,17 @@ namespace InnvoTech.Controllers
             }
             Console.WriteLine("added {0} to cart {1}", id, cartId);
 
+            byte[] objectBytes = null;
+            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            {
+                //I'm going to serialize the product name here, but you can serialize anything - including complex objects!
+                bf.Serialize(ms, id);
+                objectBytes = ms.ToArray();
+            };
+
+            HttpContext.Session.Set(cartId, objectBytes);
+
             return RedirectToAction("Index", "Delivery");
         }
     }
