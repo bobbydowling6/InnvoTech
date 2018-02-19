@@ -28,7 +28,11 @@ namespace InnvoTech
             services.AddAntiforgery();
             services.AddSession();
 
-            services.AddDbContext<IdentityDbContext>(opt => opt.UseInMemoryDatabase("Identities"));
+            services.AddDbContext<IdentityDbContext>(opt => 
+            //opt.UseInMemoryDatabase("Identities")
+            opt.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = BobTest; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"
+            , sqlOptions => sqlOptions.MigrationsAssembly(this.GetType().Assembly.FullName))
+            );
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityDbContext>()

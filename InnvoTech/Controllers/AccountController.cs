@@ -11,8 +11,6 @@ namespace InnvoTech.Controllers
     {
         private SignInManager<IdentityUser> _signInManager;
 
-        public object DefaultAuthenticationTypes { get; private set; }
-
         public AccountController(SignInManager<IdentityUser> signInManager)
         {
             this._signInManager = signInManager;
@@ -29,15 +27,15 @@ namespace InnvoTech.Controllers
             return View();
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         public IActionResult Logout()
         {
             _signInManager.SignOutAsync().Wait();
             return RedirectToAction("Index", "home");
-        }
-
-        public IActionResult Login()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -51,7 +49,7 @@ namespace InnvoTech.Controllers
                 {
                     if (_signInManager.UserManager.CheckPasswordAsync(existingUser, password).Result)
                     {
-                        _signInManager.SignInAsync(existingUser, false);
+                        _signInManager.SignInAsync(existingUser, false).Wait();
                         return RedirectToAction("Index", "Home");
                     }
                     else
