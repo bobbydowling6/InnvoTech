@@ -9,15 +9,40 @@ namespace InnvoTech.Controllers
     public class ProductsController : Controller
     {
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
+            //ADO.Net method of calling SQL database to show list of products to viewing page
             Models.ProductsViewModel model = new Models.ProductsViewModel();
-            model.Name = "The Biski";
-            model.Id = 1;
-            model.Color = "Blue or Red";
-            model.Price = 3000;
-            model.Description = "The Biski is truly unique; as a single seat (or single plus pillion), twin jet, HSA Motorcycle, it is a world’s first in many ways. At just 2.3m long and under 1m wide, it is the smallest of all Gibbs High speed amphibious platforms, and very probably the most technically advanced. It represents true freedom for the individual; serious fun.";
-            model.ImageUrl = "/images/biskigify.gif";
+
+
+            string connectionString = @"Data Source = (localdb)\MSSQLLocalDB; Initial Catalog = BobTest; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            var connection = new System.Data.SqlClient.SqlConnection(connectionString);
+
+            connection.Open();
+            var command = connection.CreateCommand();
+            command.CommandText = "Select * From Products Where ID = " + id.Value;
+            var reader = command.ExecuteReader();
+            var nameColumn = reader.GetOrdinal("Name");
+            var priceColumn = reader.GetOrdinal("Price");
+            var colorColumn = reader.GetOrdinal("Color");
+            var descriptionColumn = reader.GetOrdinal("Description");
+            var imageUrlColumn = reader.GetOrdinal("ImageUrl");
+            while (reader.Read())
+            {
+                model.Name = reader.GetString(nameColumn);   //I can see name is the second column in the database.
+                model.Price = reader.GetDecimal(priceColumn);
+                model.Color = reader.GetString(colorColumn);
+                model.Description = reader.GetString(descriptionColumn);
+                model.ImageUrl = reader.GetString(imageUrlColumn);
+            }
+
+            //model.Name = "The Biski";
+            //model.Id = 1;
+            //model.Color = "Blue or Red";
+            //model.Price = 3000;
+            //model.Description = "The Biski is truly unique; as a single seat (or single plus pillion), twin jet, HSA Motorcycle, it is a world’s first in many ways. At just 2.3m long and under 1m wide, it is the smallest of all Gibbs High speed amphibious platforms, and very probably the most technically advanced. It represents true freedom for the individual; serious fun.";
+            //model.ImageUrl = "/images/biskigify.gif";
+            connection.Close();
             return View(model);
         }
 

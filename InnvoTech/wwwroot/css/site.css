@@ -3,6 +3,11 @@
     width: 250px;
 }
 
+.d-lg-none 
+
+d-none d-lg-block {
+    background-image: url(/images/biski.jpg)
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
