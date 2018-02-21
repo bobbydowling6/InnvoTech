@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using InnvoTech.Models;
 
 namespace InnvoTech
 {
@@ -28,11 +29,16 @@ namespace InnvoTech
             services.AddAntiforgery();
             services.AddSession();
 
-            services.AddDbContext<IdentityDbContext>(opt => 
+            //This will read the appsettings.json into an object which I can use throughout my app
+            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
+            services.AddOptions();
+
+            services.AddDbContext<IdentityDbContext>(opt =>
             //opt.UseInMemoryDatabase("Identities")
-            opt.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = BobTest; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"
-            , sqlOptions => sqlOptions.MigrationsAssembly(this.GetType().Assembly.FullName))
-            );
+            //opt.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = BobTest; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"
+            //, sqlOptions => sqlOptions.MigrationsAssembly(this.GetType().Assembly.FullName))
+            //);
+            opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityDbContext>()
