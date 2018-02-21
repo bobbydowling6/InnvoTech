@@ -29,8 +29,8 @@ namespace InnvoTech.Controllers
             var imageUrlColumn = reader.GetOrdinal("ImageUrl");
             while (reader.Read())
             {
-                model.Name = reader.GetString(nameColumn);   //I can see name is the second column in the database.
-                model.Price = reader.GetDecimal(priceColumn);
+                model.Name = reader.IsDBNull(nameColumn) ? "" : reader.GetString(nameColumn);   //I can see name is the second column in the database.
+                model.Price = reader .IsDBNull(priceColumn) ? 0m: reader.GetDecimal(priceColumn);
                 model.Color = reader.GetString(colorColumn);
                 model.Description = reader.GetString(descriptionColumn);
                 model.ImageUrl = reader.GetString(imageUrlColumn);
