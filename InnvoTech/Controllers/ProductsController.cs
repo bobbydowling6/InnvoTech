@@ -19,28 +19,28 @@ namespace InnvoTech.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int? id)
+        public IActionResult Index(int id = 1)
         {
-            //ADO.Net method of calling SQL database to show list of products to viewing page
+            //ADO.Net method of calling SQL database to show list of products to viewing page, including using a stored procedure
             ProductsViewModel model = new ProductsViewModel();
              using (var connection = new SqlConnection(_connectionStrings.DefaultConnection))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
 
-                command.CommandText = "Select * From Products Where ID = " + id.Value;
+                command.CommandText = "sp_GetProduct";
+                command.Parameters.AddWithValue("@id", id);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
                 using (var reader = command.ExecuteReader())
                 {
                     var nameColumn = reader.GetOrdinal("Name");
                     var priceColumn = reader.GetOrdinal("Price");
-                    var colorColumn = reader.GetOrdinal("Color");
                     var descriptionColumn = reader.GetOrdinal("Description");
                     var imageUrlColumn = reader.GetOrdinal("ImageUrl");
                     while (reader.Read())
                     {
                         model.Name = reader.IsDBNull(nameColumn) ? "" : reader.GetString(nameColumn);   //I can see name is the second column in the database.
                         model.Price = reader.IsDBNull(priceColumn) ? 0m : reader.GetDecimal(priceColumn);
-                        model.Color = reader.IsDBNull(colorColumn) ? "" : reader.GetString(colorColumn);
                         model.Description = reader.IsDBNull(descriptionColumn) ? "" : reader.GetString(descriptionColumn);
                         model.ImageUrl = reader.IsDBNull(imageUrlColumn) ? "/image/noImage.jpg" : reader.GetString(imageUrlColumn);
                     }
