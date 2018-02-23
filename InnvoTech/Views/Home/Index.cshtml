@@ -35,45 +35,55 @@
                 </a>
             </div>
             <br />
-            <div class="row">
-                <div class="col-md-3">
-                    <h2>Application uses</h2>
-                    <ul>
-                        <li>Sample pages using ASP.NET Core MVC</li>
-                        <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-                    </ul>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 mb-4">
+                        <div class="card h-100">
+                            <a asp-controller="Products" asp-action="Index" id="1"><img class="card-img-top" src="~/images/biski.jpg" alt="The BiSki" height="200" width="250"></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a asp-controller="Products" asp-action="Index" id="1">The BiSki</a>
+                                </h4>
+                                <h5>$24.99</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 mb-4">
+                        <div class="card h-100">
+                            <a asp-controller="Products" asp-action="Index" id="8"><img class="card-img-top" src="~/images/electricwakeboard.jpg" alt="The Electric Wakeboard" height="200" width="250"></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a asp-controller="Products" asp-action="Index" id="8">The Electric Wakeboard</a>
+                                </h4>
+                                <h5>$24.99</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 mb-4">
+                        <div class="card h-100">
+                            <a asp-controller="Products" asp-action="Index" id="2"><img class="card-img-top" src="~/images/googleglass.jpg" alt="Google Glass" height="200" width="250"></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a asp-controller="Products" asp-action="Index" id="2">Google Glass</a>
+                                </h4>
+                                <h5>$24.99</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <h2>How to</h2>
-                    <ul>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h2>Overview</h2>
-                    <ul>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h2>Run &amp; Deploy</h2>
-                    <ul>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-                        <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </div>
 </main>
