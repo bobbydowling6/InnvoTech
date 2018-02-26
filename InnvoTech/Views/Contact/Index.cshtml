@@ -5,6 +5,7 @@
 
 <form method="post">
    @Html.AntiForgeryToken()
+    <div class="jumbotron">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="firstname">*First Name</label>
@@ -28,8 +29,9 @@
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Write your comments here" required></textarea>
         </div>
         <button type="submit" class="btn btn-info">Send Form</button>
+    </div>
 </form>
-<br />
+
 <footer>
     <div class="row">
         <div class="col-md-4 col-sm-4">
