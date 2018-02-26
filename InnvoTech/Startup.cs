@@ -50,7 +50,7 @@ namespace InnvoTech
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, BobTestContext Context)
         {
             if (env.IsDevelopment())
             {
@@ -74,6 +74,8 @@ namespace InnvoTech
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            //I'm going to put my initialization logic in a seperate class
+            DbInitializer.Initialize(Context);
         }
     }
 }
