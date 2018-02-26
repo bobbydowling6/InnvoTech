@@ -5,7 +5,7 @@ using InnvoTech.Models;
 namespace InnvoTech
 {
 
-    //Subsitute from using a sql database directing the connection to BobTest1 instead of BobTest
+    //Subsitute from using a sql database directing the connection to BobTest1 instead of BobTest to use Entity Framework
     internal class DbInitializer
     {
         internal static void Initialize(BobTestContext context)
