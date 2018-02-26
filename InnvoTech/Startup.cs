@@ -33,15 +33,19 @@ namespace InnvoTech
             services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
             services.AddOptions();
 
-            services.AddDbContext<IdentityDbContext>(opt =>
+            //services.AddDbContext<IdentityDbContext>(opt =>
             //opt.UseInMemoryDatabase("Identities")
             //opt.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = BobTest; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"
             //, sqlOptions => sqlOptions.MigrationsAssembly(this.GetType().Assembly.FullName))
             //);
-            opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //Added the configuration settings as "ConfigureServices" method through using the sql server context:
+            services.AddDbContext<BobTestContext>(
+                opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
+                sqlOptions => sqlOptions.MigrationsAssembly(this.GetType().Assembly.FullName)));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<IdentityDbContext>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<BobTestContext>()
                 .AddDefaultTokenProviders();
         }
 
