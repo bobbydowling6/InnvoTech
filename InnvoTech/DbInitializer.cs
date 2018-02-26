@@ -47,7 +47,7 @@ namespace InnvoTech
                 {
                     Name = "Massaging Robot",
                     Price = 399.99m,
-                    Description = "A robot that massages your back for you!",
+                    Description = "A palm-sized robot, designed solely for your relaxation. Using a unique sensor technology, WheeMe moves along the back, creating wave after wave of soothing sensations, without falling down or losing grip. Enjoy your own portable massage therapist anytime, anywhere.",
                     ImageUrl = "/images/massagingrobot.jpg",
                     DateCreated = DateTime.Now,
                     DateLastModified = DateTime.Now
