@@ -8,7 +8,8 @@ namespace InnvoTech.Models
         public Products()
         {
             CartProducts = new HashSet<CartProducts>();
-            OrderProducts = new HashSet<OrderProducts>();
+            Reviews = new HashSet<Review>();
+            LineItems = new HashSet<LineItem>();
         }
 
         public int Id { get; set; }
@@ -20,6 +21,8 @@ namespace InnvoTech.Models
         public DateTime? DateLastModified { get; set; }
 
         public ICollection<CartProducts> CartProducts { get; set; }
-        public ICollection<OrderProducts> OrderProducts { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<LineItem> LineItems { get; set; }
     }
 }

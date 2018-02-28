@@ -14,10 +14,10 @@ namespace InnvoTech.Models
         [System.ComponentModel.DataAnnotations.Required]
         public string City { get; set; }
         [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^\d{5}(?:[-\s]\d{4})?$", ErrorMessage ="Use a 5 or 9 digit zip code")]
-        public string Zip { get; set; }
-        [System.ComponentModel.DataAnnotations.Required]
         public string State { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^\d{5}(?:[-\s]\d{4})?$", ErrorMessage = "Use a 5 or 9 digit zip code")]
+        public string Zip { get; set; }
         [System.ComponentModel.DataAnnotations.Required]
         public DateTime? Date { get; set; }
     }

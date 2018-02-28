@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using InnvoTech.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace InnvoTech
 {
@@ -11,7 +12,7 @@ namespace InnvoTech
         internal static void Initialize(BobTestContext context)
         {
             //Before "Seeding", make sure the database exists. 
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
             //Once created, you can start adding records, if none exists.
            if (!context.Products.Any())
             {
@@ -94,6 +95,18 @@ namespace InnvoTech
                 }
 
                 );
+                context.SaveChanges();
+            }
+
+           if (!context.Reviews.Any())
+            {
+                context.Reviews.Add(new Review
+                {
+                    Rating = 5,
+                    Body = "This Product is Awesome!!",
+                    IsApproved = true,
+                    products = context.Products.First()  //I'm going to add this review to the first product in the database
+                });
                 context.SaveChanges();
             }
         }

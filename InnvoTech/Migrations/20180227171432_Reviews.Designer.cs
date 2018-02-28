@@ -11,9 +11,10 @@ using System;
 namespace InnvoTech.Migrations
 {
     [DbContext(typeof(BobTestContext))]
-    partial class BobTestContextModelSnapshot : ModelSnapshot
+    [Migration("20180227171432_Reviews")]
+    partial class Reviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,10 +35,6 @@ namespace InnvoTech.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -62,6 +59,10 @@ namespace InnvoTech.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
+                    b.Property<string>("firstName");
+
+                    b.Property<string>("lastName");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -77,60 +78,56 @@ namespace InnvoTech.Migrations
 
             modelBuilder.Entity("InnvoTech.Models.Cart", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasDefaultValueSql("(newid())");
 
-                    b.Property<Guid>("TrackingNumber");
+                    b.Property<string>("AspNetUserId")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("UserId");
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<DateTime>("DateLastModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("InnvoTech.Models.CartProducts", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<Guid>("CartId")
+                        .HasColumnName("CartID");
 
-                    b.Property<int?>("CartId");
+                    b.Property<int>("ProductsId")
+                        .HasColumnName("ProductsID");
 
-                    b.Property<int?>("ProductsId");
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<int>("Quantity");
+                    b.Property<DateTime>("DateLastModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("((1))");
 
-                    b.HasIndex("CartId");
+                    b.HasKey("CartId", "ProductsId");
 
                     b.HasIndex("ProductsId");
 
                     b.ToTable("CartProducts");
-                });
-
-            modelBuilder.Entity("InnvoTech.Models.LineItem", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("OrderId")
-                        .IsRequired();
-
-                    b.Property<int>("Quantity");
-
-                    b.Property<int?>("productsId")
-                        .IsRequired();
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("productsId");
-
-                    b.ToTable("LineItems");
                 });
 
             modelBuilder.Entity("InnvoTech.Models.Order", b =>
@@ -138,60 +135,125 @@ namespace InnvoTech.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DateCreated");
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<DateTime>("DateLastModified");
+                    b.Property<DateTime>("DateLastModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(512);
 
-                    b.Property<string>("PurchaserName");
+                    b.Property<string>("PurchaserName")
+                        .IsRequired()
+                        .HasMaxLength(512);
 
-                    b.Property<DateTime?>("ShipDate");
+                    b.Property<DateTime?>("ShipDate")
+                        .HasColumnType("datetime");
 
-                    b.Property<string>("ShippingAddress1");
+                    b.Property<string>("ShippingAddress1")
+                        .IsRequired()
+                        .HasMaxLength(1000);
 
-                    b.Property<decimal>("ShippingAndHandling");
+                    b.Property<decimal>("ShippingAndHandling")
+                        .HasColumnType("money");
 
-                    b.Property<string>("ShippingCity");
+                    b.Property<string>("ShippingCity")
+                        .IsRequired()
+                        .HasMaxLength(1000);
 
-                    b.Property<string>("ShippingPostalCode");
+                    b.Property<string>("ShippingPostalCode")
+                        .IsRequired()
+                        .HasColumnType("nchar(10)");
 
-                    b.Property<string>("ShippingState");
+                    b.Property<string>("ShippingState")
+                        .IsRequired()
+                        .HasMaxLength(100);
 
-                    b.Property<decimal>("SubTotal");
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("money");
 
-                    b.Property<DateTime>("SubmittedDate");
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("money");
 
-                    b.Property<decimal>("Tax");
-
-                    b.Property<Guid>("TrackingNumber")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("UserId");
+                    b.Property<string>("TrackingNumber")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(8)")
+                        .HasDefaultValueSql("(left(newid(),(8)))");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.ToTable("Order");
+                });
 
-                    b.ToTable("Orders");
+            modelBuilder.Entity("InnvoTech.Models.OrderProducts", b =>
+                {
+                    b.Property<int>("ProductsId")
+                        .HasColumnName("ProductsID");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnName("OrderID");
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<DateTime>("DateLastModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("PlacedName")
+                        .HasMaxLength(100);
+
+                    b.Property<decimal>("PlacedUnitPrice")
+                        .HasColumnType("money");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("((1))");
+
+                    b.HasKey("ProductsId", "OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("InnvoTech.Models.Products", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID");
 
-                    b.Property<DateTime?>("DateCreated");
+                    b.Property<DateTime?>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<DateTime?>("DateLastModified");
+                    b.Property<DateTime?>("DateLastModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasMaxLength(4000);
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(1000);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasMaxLength(100);
 
-                    b.Property<decimal?>("Price");
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("money");
 
                     b.HasKey("Id");
 
@@ -330,42 +392,30 @@ namespace InnvoTech.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("InnvoTech.Models.Cart", b =>
-                {
-                    b.HasOne("InnvoTech.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("InnvoTech.Models.CartProducts", b =>
                 {
                     b.HasOne("InnvoTech.Models.Cart", "Cart")
                         .WithMany("CartProducts")
-                        .HasForeignKey("CartId");
+                        .HasForeignKey("CartId")
+                        .HasConstraintName("FK_CartProducts_Cart");
 
                     b.HasOne("InnvoTech.Models.Products", "Products")
                         .WithMany("CartProducts")
-                        .HasForeignKey("ProductsId");
+                        .HasForeignKey("ProductsId")
+                        .HasConstraintName("FK_CartProducts_Products");
                 });
 
-            modelBuilder.Entity("InnvoTech.Models.LineItem", b =>
+            modelBuilder.Entity("InnvoTech.Models.OrderProducts", b =>
                 {
                     b.HasOne("InnvoTech.Models.Order", "Order")
-                        .WithMany("LineItems")
+                        .WithMany("OrderProducts")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_OrderProducts_Order");
 
-                    b.HasOne("InnvoTech.Models.Products", "products")
-                        .WithMany("LineItems")
-                        .HasForeignKey("productsId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("InnvoTech.Models.Order", b =>
-                {
-                    b.HasOne("InnvoTech.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("InnvoTech.Models.Products", "Products")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("ProductsId")
+                        .HasConstraintName("FK_OrderProducts_Products");
                 });
 
             modelBuilder.Entity("InnvoTech.Models.Review", b =>

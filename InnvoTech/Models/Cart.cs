@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace InnvoTech.Models
 {
@@ -10,11 +12,9 @@ namespace InnvoTech.Models
             CartProducts = new HashSet<CartProducts>();
         }
 
-        public Guid Id { get; set; }
-        public string AspNetUserId { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateLastModified { get; set; }
-
+        public int Id { get; set; }
+        public Guid TrackingNumber { get; set; }
+        public ApplicationUser User { get; set; }       
         public ICollection<CartProducts> CartProducts { get; set; }
     }
 }

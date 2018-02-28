@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using InnvoTech.Models;
 
 namespace InnvoTech.Controllers
 {
     public class AccountController : Controller
     {
-        private SignInManager<IdentityUser> _signInManager;
+        private SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(SignInManager<IdentityUser> signInManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager)
         {
             this._signInManager = signInManager;
         }
@@ -44,7 +45,7 @@ namespace InnvoTech.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser existingUser = _signInManager.UserManager.FindByNameAsync(username).Result;
+                ApplicationUser existingUser = _signInManager.UserManager.FindByNameAsync(username).Result;
                 if (existingUser != null)
                 {
                     if (_signInManager.UserManager.CheckPasswordAsync(existingUser, password).Result)
@@ -71,7 +72,7 @@ namespace InnvoTech.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser newUser = new IdentityUser(username);
+                ApplicationUser newUser = new ApplicationUser();
                 var userResult = _signInManager.UserManager.CreateAsync(newUser).Result;
                 if (userResult.Succeeded)
                 {

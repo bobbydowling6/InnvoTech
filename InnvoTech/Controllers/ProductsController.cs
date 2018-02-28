@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using InnvoTech.Models;
 using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace InnvoTech.Controllers
 {
@@ -29,7 +30,7 @@ namespace InnvoTech.Controllers
         {
             //ADO.Net method of calling SQL database to show list of products to viewing page, including using a stored procedure
             //ProductsViewModel model = new ProductsViewModel();
-            var product = _context.Products.Find(id);
+            var product = _context.Products.Include(x => x.Reviews).Single(x => x.Id == id);
             return View(product);
             //Another method to use to call out all products
             //if (id.HasValue)
@@ -77,30 +78,48 @@ namespace InnvoTech.Controllers
         
 
         [HttpPost]
-        public IActionResult Index(string id)
+        public IActionResult Index(int id, bool extraParam = true)
         {
-            string cartId;
-            if (!Request.Cookies.ContainsKey("cartid"))
+            Guid cartId;
+            Cart c;
+            CartProducts i;
+
+            if (Request.Cookies.ContainsKey("cartId") && Guid.TryParse(Request.Cookies["cartId"], out cartId) && _context.Cart.Any(x => x.TrackingNumber == cartId))
             {
-                cartId = Guid.NewGuid().ToString();
-                Response.Cookies.Append("cartId", cartId, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddYears(1) });
+                c = _context.Cart
+                    .Include(x => x.CartProducts)
+                    .ThenInclude(y => y.Products)
+                    .Single(x => x.TrackingNumber == cartId);
             }
             else
             {
-                Request.Cookies.TryGetValue("cartId", out cartId);
+                c = new Cart();
+                cartId = Guid.NewGuid();
+                c.TrackingNumber = cartId;
+                _context.Cart.Add(c);
             }
-            Console.WriteLine("added {0} to cart {1}", id, cartId);
-
-            byte[] objectBytes = null;
-            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            if (c.CartProducts.Any(x => x.Products.Id == id))
             {
-                //I'm going to serialize the product name here, but you can serialize anything - including complex objects!
-                bf.Serialize(ms, id);
-                objectBytes = ms.ToArray();
-            };
+                i = c.CartProducts.FirstOrDefault(x => x.Products.Id == id);
+            }
+            else
+            {
+                i = new CartProducts();
+                i.Cart = c;
+                i.Products = _context.Products.Find(id);
+                c.CartProducts.Add(i);
+            }
+            i.Quantity++;
 
-            HttpContext.Session.Set(cartId, objectBytes);
+            _context.SaveChanges();
+            Response.Cookies.Append("cartId", c.TrackingNumber.ToString(),
+                new Microsoft.AspNetCore.Http.CookieOptions
+                {
+                    Expires = DateTime.Now.AddYears(1)
+                });
+
+            Console.WriteLine("Added {0} to cart {1}", id, cartId);
+
 
             return RedirectToAction("Index", "Delivery");
         }

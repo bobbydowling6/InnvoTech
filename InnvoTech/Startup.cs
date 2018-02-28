@@ -30,8 +30,8 @@ namespace InnvoTech
             services.AddSession();
 
             //This will read the appsettings.json into an object which I can use throughout my app
-            services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
-            services.AddOptions();
+            //services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
+            //services.AddOptions();
 
             //services.AddDbContext<IdentityDbContext>(opt =>
             //opt.UseInMemoryDatabase("Identities")
@@ -63,11 +63,8 @@ namespace InnvoTech
             }
 
             app.UseStaticFiles();
-
             app.UseSession();
-
             app.UseAuthentication();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -7,11 +7,11 @@ namespace InnvoTech.Models
     {
         public Order()
         {
-            OrderProducts = new HashSet<OrderProducts>();
+            LineItems = new HashSet<LineItem>();
         }
 
         public int Id { get; set; }
-        public string TrackingNumber { get; set; }
+        public Guid TrackingNumber { get; set; }
         public string Email { get; set; }
         public string PurchaserName { get; set; }
         public string ShippingAddress1 { get; set; }
@@ -25,6 +25,9 @@ namespace InnvoTech.Models
         public DateTime DateLastModified { get; set; }
         public DateTime? ShipDate { get; set; }
 
-        public ICollection<OrderProducts> OrderProducts { get; set; }
+        public ApplicationUser User { get; set; }
+
+        public ICollection<LineItem> LineItems { get; set; }
+        public DateTime SubmittedDate { get; set; }
     }
 }

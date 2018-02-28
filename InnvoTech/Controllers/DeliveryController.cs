@@ -4,31 +4,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using InnvoTech.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace InnvoTech.Controllers
 {
     public class DeliveryController : Controller
     {
+        private BobTestContext _context;
+
+        public DeliveryController(BobTestContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult Index()
         {
             string cartId;
-            if (Request.Cookies.TryGetValue("cartId", out cartId))
+            Guid trackingNumber;
+            if (Request.Cookies.TryGetValue("cartId", out cartId) && Guid.TryParse(cartId, out trackingNumber))
             {
-                byte[] gadgetBytes;
-                if(HttpContext.Session.TryGetValue(cartId, out gadgetBytes))
-                {
-                    System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
-                    {
-                        ms.Write(gadgetBytes, 0, gadgetBytes.Length);
-                        ms.Seek(0, System.IO.SeekOrigin.Begin);
-                        ViewData["gadgetName"] = (string)bf.Deserialize(ms);
-                    }
-                }
+                var cart = _context.Cart.Include(x => x.CartProducts).ThenInclude(y => y.Products).Single(x => x.TrackingNumber == trackingNumber);
+                ViewData["gadgetName"] = cart.CartProducts.First().Products.Name;
             }
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(DeliveryViewModel models)
@@ -43,7 +44,9 @@ namespace InnvoTech.Controllers
             {
                 return this.RedirectToAction("Index", "Home");
             }
+
             return View();
         }
     }
 }
+
