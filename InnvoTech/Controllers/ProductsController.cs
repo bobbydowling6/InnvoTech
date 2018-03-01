@@ -26,6 +26,12 @@ namespace InnvoTech.Controllers
         }
 
         [HttpGet]
+        public IActionResult Gadgets ()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Index(int id = 1)
         {
             //ADO.Net method of calling SQL database to show list of products to viewing page, including using a stored procedure
@@ -98,6 +104,10 @@ namespace InnvoTech.Controllers
                 c.TrackingNumber = cartId;
                 _context.Cart.Add(c);
             }
+            if (User.Identity.IsAuthenticated)
+            {
+                c.User = _context.Users.Find(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+            }
             if (c.CartProducts.Any(x => x.Products.Id == id))
             {
                 i = c.CartProducts.FirstOrDefault(x => x.Products.Id == id);
@@ -118,7 +128,7 @@ namespace InnvoTech.Controllers
                     Expires = DateTime.Now.AddYears(1)
                 });
 
-            Console.WriteLine("Added {0} to cart {1}", id, cartId);
+            //Console.WriteLine("Added {0} to cart {1}", id, cartId);
 
 
             return RedirectToAction("Index", "Delivery");

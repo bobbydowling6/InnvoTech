@@ -30,7 +30,7 @@
                 <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link" style="color:white">Home</a></li>
                 <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link" style="color:white">About</a></li>
                 <li class="nav-item"><a asp-area="" asp-controller="Contact" asp-action="Index" class="nav-link" style="color:white">Contact</a></li>
-                <li class="nav-item"><a asp-area="" asp-controller="Products" asp-action="Index" class="nav-link" style="color:white">Gadgets</a></li>
+                <li class="nav-item"><a asp-area="" asp-controller="Products" asp-action="Gadgets" class="nav-link" style="color:white">Gadgets</a></li>
                 @if (User.Identity.IsAuthenticated)
     {
             <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link" style="color:white">Logout as @User.Identity.Name</a></li>
