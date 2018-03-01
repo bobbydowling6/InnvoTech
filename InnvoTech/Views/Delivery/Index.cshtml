@@ -4,10 +4,43 @@
 @{
     ViewData["Title"] = "Index";
     var states = (new string[] { "", "Alabama", "Alaska", "Arkansas", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
-    "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
-    "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
-    "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
-    "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming" }).Select(x => new SelectListItem { Text = x, Value = x });
+"Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+"Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+"New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
+"South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming" }).Select(x => new SelectListItem { Text = x, Value = x });
+}
+@if (Model.CartProducts != null)
+{
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.CartProducts)
+            {
+                <tr>
+                    <td>@item.Products.Name</td>
+                    <td>
+                        <form asp-action="update" asp-controller="delivery" method="post" class="form-inline">
+                            <input name="productId" value="@item.Products.Id" type="hidden" />                            
+                            <input name="quantity" value="@item.Quantity" type="number" class="form-control-sm" /><input type="submit" value="Update Quantity" class="btn btn-info" />
+                            </form>
+                    </td>
+                    <td>@((item.Products.Price ?? 0m).ToString("c"))</td>
+                </tr>
+            }
+            <tfoot>
+                <tr>
+                    <th colspan="2">Subtotal</th>
+                    <th>@Model.CartProducts.Sum(x => (x.Products.Price ?? 0m) * x.Quantity).ToString("c")</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 }
 
 @if (!this.ViewContext.ModelState.IsValid)

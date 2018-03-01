@@ -8,6 +8,8 @@ namespace InnvoTech.Models
 {
     public class DeliveryViewModel
     {
+        public CartProducts[] CartProducts { get; set; }
+
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.Display(Name ="Primary Address")]
         public string Address { get; set; }
