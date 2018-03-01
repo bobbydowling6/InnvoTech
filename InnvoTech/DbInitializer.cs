@@ -100,12 +100,71 @@ namespace InnvoTech
 
            if (!context.Reviews.Any())
             {
-                context.Reviews.Add(new Review
+                context.Reviews.AddRange(new Review
                 {
                     Rating = 5,
                     Body = "This Product is Awesome!!",
                     IsApproved = true,
                     products = context.Products.First()  //I'm going to add this review to the first product in the database
+                },
+                new Review
+                {
+                    Rating = 5,
+                    Body = "These glasses are unbelievable, I love that the future is coming early in my door steps.",
+                    IsApproved = true,
+                    products = context.Products.First(p => p.Name == "Google Glass")// Targets this review through the specific name of the product
+                },
+                new Review
+                {
+                    Rating = 4,
+                    Body = "I used this gadget when I was visiting a friend in Japan and I can't believe how well made this gadget is. " +
+                    "Whenever I'm confused on whatever I need to say when ordering something, I can just say whatever in English and the translator will literally speak out my exact words in Japanese. " +
+                    "The only downside to this product is that it is limited to only 3 languages.",
+                    IsApproved = true,
+                    products = context.Products.First(p => p.Name == "Portable Language Translation Device")
+                },
+                new Review
+                {
+                    Rating = 3,
+                    Body = "This product is ok, I expexted to do more movements throughout the whole back and not only a section of it. 3 Stars!!!",
+                    IsApproved = true,
+                    products = context.Products.First(p => p.Name == "Massaging Robot")
+                },
+                new Review
+                {
+                    Rating = 5,
+                    Body = "I love this ATV!!! I would litterally spend hours of my day riding this thing through the sand dunes and also to be able to ride this badboy out in the open waters of Lake Michigan. 5 Stars!!!",
+                    IsApproved = true,
+                    products = context.Products.First(p => p.Name == "The QuadSki")
+                },
+                new Review
+                {
+                    Rating = 5,
+                    Body = "This is one of the most bizzare gadgets that I've ever used when I first bought this because of me being curious but when I actually used it, It was litterally like functioning my right hand with an extra thumb attatched to it. " +
+                    "This product would be great for people that are looking for loose fingers and thumbs and being able to use it to daily tasks.",
+                    IsApproved = true,
+                    products = context.Products.First(p => p.Name == "Third Thumb Attatchment")
+                },
+                new Review
+                {
+                    Rating = 5,
+                    Body = "Where has this product been all of my life!! It has made my workload as a web developer a whole lot easier in terms of organizing multiple windows and files and being able to use 3 monitor screens on my laptop instead of just 1.",
+                    IsApproved = true,
+                    products = context.Products.First(p => p.Name == "SlidenJoy Dual Laptop Monitors")
+                },
+                new Review
+                {
+                    Rating = 5,
+                    Body = "This is really cool! I can litterally use this thing anywhere where there is a body of water and just GO!",
+                    IsApproved = true,
+                    products = context.Products.First(p => p.Name == "Electric Wake Board")
+                },
+                new Review
+                {
+                    Rating = 1,
+                    Body = "I hate this product, I have no idea why I bought this stupid thing, maybe to try to look cool in front of my peers but I don't see the point on owning one of these things while my Iphone can do exactly the same thing!!!",
+                    IsApproved = true,
+                    products = context.Products.Last()//I'm going to add this review to the last product in the database
                 });
                 context.SaveChanges();
             }
