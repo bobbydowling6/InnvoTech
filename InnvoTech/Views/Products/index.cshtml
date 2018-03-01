@@ -20,10 +20,10 @@
                 <dd>@Model.Description</dd>
                 <dt>Price</dt>
                 <dd>@((Model.Price.HasValue ? Model.Price.Value.ToString("c") : "No Price"))</dd>
-                <dd style="font-weight:700">Review</dd>
             </dl>
             @if(Model.Reviews != null && Model.Reviews.Any())
                 {
+                <h6 style="font-weight:700">Review</h6>
                 @foreach(var review in Model.Reviews)
                     {
                     <blockquote>
