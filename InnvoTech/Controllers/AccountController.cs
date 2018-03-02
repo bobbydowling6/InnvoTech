@@ -23,6 +23,16 @@ namespace InnvoTech.Controllers
             return Content("You can see this if you're signed in!");
         }
 
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        public IActionResult ForgotPasswordSent()
+        {
+            return View();
+        }
+
         public ActionResult Register()
         {
             return View();
