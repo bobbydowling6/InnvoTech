@@ -5,6 +5,7 @@
 
 .d-lg-none 
 
+
 d-none d-lg-block {
     background-image: url(/images/biski.jpg)
 }
@@ -19,7 +20,8 @@ d-none d-lg-block {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-    min-width: 400px; max-width: 2048px;
+    min-width: 400px;
+    max-width: 2048px;
 }
 
 /* Carousel */
@@ -34,12 +36,4 @@ d-none d-lg-block {
     .carousel-caption {
         display: none;
     }
-}
-@font-face {
-    font-family: DAYPBL_;
-    src: url('../Fonts/DAYPBL_.ttf');
-}
-@font-face {
-    font-family: Rubik-Regular;
-    src: url('../Fonts/Rubik-Regular.ttf');
 }

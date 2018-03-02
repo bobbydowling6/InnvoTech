@@ -1,0 +1,17 @@
+﻿
+
+a.nav-link {
+    font-family: DAYPBL_;
+    font-size: 24px;
+}
+
+p.card-text{
+    font-family: DAYPBL_;
+}
+
+
+@font-face {
+    font-family: DAYPBL_;
+    src: url('../Fonts/DAYPBL_.ttf');
+}
+
