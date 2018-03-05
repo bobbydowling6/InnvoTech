@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using InnvoTech.Models;
+using SendGrid;
 
 namespace InnvoTech.Controllers
 {
     public class AccountController : Controller
     {
         private SignInManager<ApplicationUser> _signInManager;
+        private SendGridClient _sendGridClient;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, SendGrid.SendGridClient sendGridClient)
         {
             this._signInManager = signInManager;
+            this._sendGridClient = sendGridClient;
         }
 
         [Microsoft.AspNetCore.Authorization.Authorize]
@@ -83,13 +86,22 @@ namespace InnvoTech.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser newUser = new ApplicationUser();
+                newUser.UserName = username;
                 var userResult = await _signInManager.UserManager.CreateAsync(newUser);
                 if (userResult.Succeeded)
                 {
                     var passwordResult = await _signInManager.UserManager.AddPasswordAsync(newUser, password);
                     if (passwordResult.Succeeded)
                     {
-                       await _signInManager.SignInAsync(newUser, false);
+                        //TODO: Send a user a message thanking them for registering.
+                        SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
+                        message.AddTo(username);
+                        message.Subject = "Welcome to InnvoTech";
+                        message.SetFrom("innvotech@codingtemplestudent.com");
+                        message.AddContent("text/plain", "Thanks for registering as " + username + " on InnvoTech!");
+                        await _sendGridClient.SendEmailAsync(message);
+
+                        await _signInManager.SignInAsync(newUser, false);
                         return RedirectToAction("Index", "Home");
                     }
                     else

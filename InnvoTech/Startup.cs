@@ -47,6 +47,12 @@ namespace InnvoTech
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<BobTestContext>()
                 .AddDefaultTokenProviders();
+
+            //Configure the service for dependency injection
+            services.AddTransient<SendGrid.SendGridClient>((x) =>
+            {
+                return new SendGrid.SendGridClient(Configuration["sendgrid"]);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
