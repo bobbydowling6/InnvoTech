@@ -43,24 +43,24 @@ namespace InnvoTech.Controllers
             return View();
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            _signInManager.SignOutAsync().Wait();
+           await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "home");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string username, string password)
+        public async Task<IActionResult> Login(string username, string password)
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser existingUser = _signInManager.UserManager.FindByNameAsync(username).Result;
+                ApplicationUser existingUser = await _signInManager.UserManager.FindByNameAsync(username);
                 if (existingUser != null)
                 {
-                    if (_signInManager.UserManager.CheckPasswordAsync(existingUser, password).Result)
+                    if (await _signInManager.UserManager.CheckPasswordAsync(existingUser, password))
                     {
-                        _signInManager.SignInAsync(existingUser, false).Wait();
+                       await _signInManager.SignInAsync(existingUser, false);
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -78,18 +78,18 @@ namespace InnvoTech.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(string username, string password)
+        public async Task<IActionResult> Register(string username, string password)
         {
             if (ModelState.IsValid)
             {
                 ApplicationUser newUser = new ApplicationUser();
-                var userResult = _signInManager.UserManager.CreateAsync(newUser).Result;
+                var userResult = await _signInManager.UserManager.CreateAsync(newUser);
                 if (userResult.Succeeded)
                 {
-                    var passwordResult = _signInManager.UserManager.AddPasswordAsync(newUser, password).Result;
+                    var passwordResult = await _signInManager.UserManager.AddPasswordAsync(newUser, password);
                     if (passwordResult.Succeeded)
                     {
-                        _signInManager.SignInAsync(newUser, false).Wait();
+                       await _signInManager.SignInAsync(newUser, false);
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -98,7 +98,7 @@ namespace InnvoTech.Controllers
                         {
                             ModelState.AddModelError(error.Code, error.Description);
                         }
-                        _signInManager.UserManager.DeleteAsync(newUser).Wait();
+                       await _signInManager.UserManager.DeleteAsync(newUser);
                     }
                 }
                 else

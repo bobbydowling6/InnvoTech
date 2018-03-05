@@ -32,11 +32,11 @@ namespace InnvoTech.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int id = 1)
+        public async Task<IActionResult> Index(int id = 1)
         {
             //ADO.Net method of calling SQL database to show list of products to viewing page, including using a stored procedure
             //ProductsViewModel model = new ProductsViewModel();
-            var product = _context.Products.Include(x => x.Reviews).Single(x => x.Id == id);
+            var product = await _context.Products.Include(x => x.Reviews).SingleAsync(x => x.Id == id);
             return View(product);
             //Another method to use to call out all products
             //if (id.HasValue)
@@ -84,7 +84,7 @@ namespace InnvoTech.Controllers
         
 
         [HttpPost]
-        public IActionResult Index(int id, bool extraParam = true)
+        public async Task<IActionResult> Index(int id, bool extraParam = true)
         {
             Guid cartId;
             Cart c;
@@ -92,10 +92,10 @@ namespace InnvoTech.Controllers
 
             if (Request.Cookies.ContainsKey("cartId") && Guid.TryParse(Request.Cookies["cartId"], out cartId) && _context.Cart.Any(x => x.TrackingNumber == cartId))
             {
-                c = _context.Cart
+                c = await _context.Cart
                     .Include(x => x.CartProducts)
                     .ThenInclude(y => y.Products)
-                    .Single(x => x.TrackingNumber == cartId);
+                    .SingleAsync(x => x.TrackingNumber == cartId);
             }
             else
             {
@@ -106,7 +106,7 @@ namespace InnvoTech.Controllers
             }
             if (User.Identity.IsAuthenticated)
             {
-                c.User = _context.Users.Find(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+                c.User = await _context.Users.FindAsync(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier));
             }
             if (c.CartProducts.Any(x => x.Products.Id == id))
             {
