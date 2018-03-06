@@ -11,10 +11,12 @@ namespace InnvoTech.Controllers
     public class DeliveryController : Controller
     {
         private BobTestContext _context;
+        private Braintree.BraintreeGateway _braintreeGateway;
 
-        public DeliveryController(BobTestContext context)
+        public DeliveryController(BobTestContext context, Braintree.BraintreeGateway braintreeGateway)
         {
             _context = context;
+            _braintreeGateway = braintreeGateway;
         }
 
         [HttpGet]
@@ -54,7 +56,7 @@ namespace InnvoTech.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(DeliveryViewModel models)
+        public async Task<IActionResult> Index(DeliveryViewModel models, string creditcardnumber, string creditcardname, string creditcardverificationvalue, string expirationmonth, string expirationyear)
         {
             System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"^\d{5}(?:[-\s]\d{4})?$");
             if (string.IsNullOrEmpty(models.Zip) || !regex.IsMatch(models.Zip))
@@ -64,7 +66,25 @@ namespace InnvoTech.Controllers
 
             if (ModelState.IsValid)
             {
-                return this.RedirectToAction("Index", "Home");
+                Braintree.TransactionRequest saleRequest = new Braintree.TransactionRequest();
+                saleRequest.Amount = 10;
+                saleRequest.CreditCard = new Braintree.TransactionCreditCardRequest()
+                {
+                    CardholderName = creditcardname,
+                    CVV = creditcardverificationvalue,
+                    ExpirationMonth = expirationmonth,
+                    ExpirationYear = expirationyear,
+                    Number = creditcardnumber
+                };
+                var result = await _braintreeGateway.Transaction.SaleAsync(saleRequest);
+                if (result.IsSuccess())
+                {
+                    return this.RedirectToAction("Index", "Home");
+                }
+                foreach(var error in result.Errors.All())
+                {
+                    ModelState.AddModelError(error.Code.ToString(), error.Message);
+                }
             }
 
             return View();
