@@ -81,6 +81,19 @@
         <input asp-for="Date" class="@(ViewData.ModelState.ContainsKey(" Date") && ViewData.ModelState.First(x=> x.Key == "Date").Value.ValidationState == ModelValidationState.Invalid ? "form-control is-invalid" : "form-control")" placeholder="Date" />
         <span asp-validation-for="Date" class="invalid-feedback"></span>
     </div>
+
+    <div class="form-group">
+        <label for="creditcardnumber">Credit Card</label>
+        <input type="text" name="creditcardnumber" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="creditcardname">Name on Card</label>
+        <input type="text" name="creditcardname" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="expirationmonth">Expiration Month</label>
+        <input type="text" 
+    </div>
     <button type="submit" class="btn btn-success">Submit</button>
 </form>
 

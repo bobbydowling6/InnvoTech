@@ -53,6 +53,14 @@ namespace InnvoTech
             {
                 return new SendGrid.SendGridClient(Configuration["sendgrid"]);
             });
+
+            services.AddTransient<Braintree.BraintreeGateway>((x) =>
+            {
+                return new Braintree.BraintreeGateway(
+            Configuration["braintree.environment"], Configuration["braintree.merchantid"],
+            Configuration["braintree.publickey"], Configuration["braintree.privatekey"]
+                );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using InnvoTech.Models;
 using SendGrid;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace InnvoTech.Controllers
 {
@@ -31,9 +32,62 @@ namespace InnvoTech.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var user = await _signInManager.UserManager.FindByEmailAsync(email);
+            if(user != null)
+            {
+                string token = await _signInManager.UserManager.GeneratePasswordResetTokenAsync(user);
+                string currentUrl = Request.GetDisplayUrl();
+                System.Uri uri = new Uri(currentUrl);
+                string resetUrl = uri.GetLeftPart(UriPartial.Authority);
+                resetUrl += "/Account/ForgotPassword/" + System.Net.WebUtility.UrlEncode(token) + "?email=" + email;
+
+                SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
+                message.AddTo(email);
+                message.Subject = "Your password reset token";
+                message.SetFrom("innvotech@codingtemplestudent.com");
+                message.AddContent("text/plain", resetUrl);
+                message.AddContent("text/html", string.Format("<a href=\"{0}\">{0}</a>", resetUrl));
+
+                await _sendGridClient.SendEmailAsync(message);
+            }
+            return RedirectToAction("ForgotPasswordSent");
+        }
+
         public IActionResult ForgotPasswordSent()
         {
             return View();
+        }
+
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string id, string email, string password)
+        {
+            string originalToken = id;
+            var user = await _signInManager.UserManager.FindByEmailAsync(email);
+            if (User != null)
+            {
+                var result = await _signInManager.UserManager.ResetPasswordAsync(user, originalToken, password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                }
+                return View();
+            }
+            return RedirectToAction("Login");
         }
 
         public ActionResult Register()
@@ -87,6 +141,7 @@ namespace InnvoTech.Controllers
             {
                 ApplicationUser newUser = new ApplicationUser();
                 newUser.UserName = username;
+                newUser.Email = username;
                 var userResult = await _signInManager.UserManager.CreateAsync(newUser);
                 if (userResult.Succeeded)
                 {
@@ -99,6 +154,7 @@ namespace InnvoTech.Controllers
                         message.Subject = "Welcome to InnvoTech";
                         message.SetFrom("innvotech@codingtemplestudent.com");
                         message.AddContent("text/plain", "Thanks for registering as " + username + " on InnvoTech!");
+                        message.SetTemplateId("701c49d4-0931-4dd2-9c44-2ca93ad7f00e");
                         await _sendGridClient.SendEmailAsync(message);
 
                         await _signInManager.SignInAsync(newUser, false);
