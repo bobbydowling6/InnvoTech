@@ -38,11 +38,12 @@ namespace InnvoTech.Controllers
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
             if(user != null)
             {
-                string resetToken = await _signInManager.UserManager.GeneratePasswordResetTokenAsync(user);
+                string token = await _signInManager.UserManager.GeneratePasswordResetTokenAsync(user);
+                token = System.Net.WebUtility.UrlEncode(token);
                 string currentUrl = Request.GetDisplayUrl();
                 System.Uri uri = new Uri(currentUrl);
                 string resetUrl = uri.GetLeftPart(UriPartial.Authority);
-                resetUrl += "/Account/ForgotPassword/" + System.Net.WebUtility.UrlEncode(resetToken) + "?email=" + email;
+                resetUrl += "/account/resetpassword?id=" + token + "&email=" + email;
         
                 SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
                 message.AddTo(email);
@@ -50,6 +51,7 @@ namespace InnvoTech.Controllers
                 message.SetFrom("innvotech@codingtemplestudent.com");
                 message.AddContent("text/plain", resetUrl);
                 message.AddContent("text/html", string.Format("<a href=\"{0}\">{0}</a>", resetUrl));
+                message.SetTemplateId("189fec1e-6985-4cde-bc5f-4eaa90a21daa");
 
                 await _sendGridClient.SendEmailAsync(message);
             }
@@ -76,7 +78,7 @@ namespace InnvoTech.Controllers
                 var result = await _signInManager.UserManager.ResetPasswordAsync(user, originalToken, password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Login");
+                    return RedirectToAction("Login", new { resetSuccessful = true });
                 }
                 else
                 {
@@ -154,6 +156,7 @@ namespace InnvoTech.Controllers
                         message.Subject = "Welcome to InnvoTech";
                         message.SetFrom("innvotech@codingtemplestudent.com");
                         message.AddContent("text/plain", "Thanks for registering as " + username + " on InnvoTech!");
+                        message.AddContent("text/html", "Thanks for registering as " + username + " on InnvoTech!");
                         message.SetTemplateId("701c49d4-0931-4dd2-9c44-2ca93ad7f00e");
                         await _sendGridClient.SendEmailAsync(message);
 

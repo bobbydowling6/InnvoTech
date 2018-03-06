@@ -57,8 +57,10 @@ namespace InnvoTech
             services.AddTransient<Braintree.BraintreeGateway>((x) =>
             {
                 return new Braintree.BraintreeGateway(
-            Configuration["braintree.environment"], Configuration["braintree.merchantid"],
-            Configuration["braintree.publickey"], Configuration["braintree.privatekey"]
+            Configuration["braintree.environment"], 
+            Configuration["braintree.merchantid"],
+            Configuration["braintree.publickey"], 
+            Configuration["braintree.privatekey"]
                 );
             });
         }
