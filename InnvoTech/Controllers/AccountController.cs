@@ -38,12 +38,12 @@ namespace InnvoTech.Controllers
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
             if(user != null)
             {
-                string token = await _signInManager.UserManager.GeneratePasswordResetTokenAsync(user);
+                string resetToken = await _signInManager.UserManager.GeneratePasswordResetTokenAsync(user);
                 string currentUrl = Request.GetDisplayUrl();
                 System.Uri uri = new Uri(currentUrl);
                 string resetUrl = uri.GetLeftPart(UriPartial.Authority);
-                resetUrl += "/Account/ForgotPassword/" + System.Net.WebUtility.UrlEncode(token) + "?email=" + email;
-
+                resetUrl += "/Account/ForgotPassword/" + System.Net.WebUtility.UrlEncode(resetToken) + "?email=" + email;
+        
                 SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
                 message.AddTo(email);
                 message.Subject = "Your password reset token";
@@ -87,7 +87,7 @@ namespace InnvoTech.Controllers
                 }
                 return View();
             }
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Register()
@@ -139,7 +139,7 @@ namespace InnvoTech.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser newUser = new ApplicationUser();
+                ApplicationUser newUser = new ApplicationUser { Email = username, UserName = username };
                 newUser.UserName = username;
                 newUser.Email = username;
                 var userResult = await _signInManager.UserManager.CreateAsync(newUser);
