@@ -10,17 +10,35 @@ namespace InnvoTech.Models
     {
         public CartProducts[] CartProducts { get; set; }
 
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "You need to enter an address")]
+        [System.ComponentModel.DataAnnotations.Display(Name = "Your Address")]
+        public string ShippingAddress { get; set; }
         [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.Display(Name ="Primary Address")]
-        public string Address { get; set; }
+        public string ShippingCity { get; set; }
         [System.ComponentModel.DataAnnotations.Required]
-        public string City { get; set; }
-        [System.ComponentModel.DataAnnotations.Required]
-        public string State { get; set; }
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^\d{5}(?:[-\s]\d{4})?$", ErrorMessage = "Use a 5 or 9 digit zip code")]
-        public string Zip { get; set; }
+        public string ShippingState { get; set; }
+        [Required]
+        public string ShippingZip { get; set; }
         [System.ComponentModel.DataAnnotations.Required]
         public DateTime? Date { get; set; }
+        [Required]
+        [CreditCard]
+        public string creditcardnumber { get; set; }
+        [Required]
+        public string creditcardname { get; set; }
+        [Required]
+        public string creditcardverificationvalue { get; set; }
+        [Required]
+        public string expirationmonth { get; set; }
+        [Required]
+        public string expirationyear { get; set; }
+        [Required]
+        public string BillingAddress { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public string BillingCity { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public string BillingState { get; set; }
+        [Required]
+        public string BillingZip { get; set; }
     }
 }

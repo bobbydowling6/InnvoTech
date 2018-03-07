@@ -106,7 +106,7 @@ namespace InnvoTech.Controllers
             }
             if (User.Identity.IsAuthenticated)
             {
-                c.User = await _context.Users.FindAsync(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier));
+                c.User = await _context.Users.FindAsync(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value);
             }
             if (c.CartProducts.Any(x => x.Products.Id == id))
             {
