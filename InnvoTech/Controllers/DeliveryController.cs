@@ -12,11 +12,24 @@ namespace InnvoTech.Controllers
     {
         private BobTestContext _context;
         private Braintree.BraintreeGateway _braintreeGateway;
+        private SmartyStreets.USStreetApi.Client _usStreetClient;
 
-        public DeliveryController(BobTestContext context, Braintree.BraintreeGateway braintreeGateway)
+        public DeliveryController(BobTestContext context, Braintree.BraintreeGateway braintreeGateway, SmartyStreets.USStreetApi.Client usStreetClient)
         {
             _context = context;
             _braintreeGateway = braintreeGateway;
+            _usStreetClient = usStreetClient;
+        }
+
+        public IActionResult ValidateAddress(string street = "222 W Ontario", string city = "Chicago", string state = "IL")
+        {
+            System.Threading.Thread.Sleep(1000);
+            SmartyStreets.USStreetApi.Lookup lookup = new SmartyStreets.USStreetApi.Lookup();
+            lookup.Street = street;
+            lookup.City = city;
+            lookup.State = state;
+            _usStreetClient.Send(lookup);
+            return Json(lookup.Result);
         }
 
         [HttpGet]

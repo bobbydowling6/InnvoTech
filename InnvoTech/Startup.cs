@@ -41,7 +41,7 @@ namespace InnvoTech
             //opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //Added the configuration settings as "ConfigureServices" method through using the sql server context:
             services.AddDbContext<BobTestContext>(
-                opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
+                opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 sqlOptions => sqlOptions.MigrationsAssembly(this.GetType().Assembly.FullName)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -57,12 +57,22 @@ namespace InnvoTech
             services.AddTransient<Braintree.BraintreeGateway>((x) =>
             {
                 return new Braintree.BraintreeGateway(
-            Configuration["braintree.environment"], 
-            Configuration["braintree.merchantid"],
-            Configuration["braintree.publickey"], 
-            Configuration["braintree.privatekey"]
+                    Configuration["braintree.environment"],
+                    Configuration["braintree.merchantid"],
+                    Configuration["braintree.publickey"],
+                    Configuration["braintree.privatekey"]
                 );
             });
+
+            services.AddTransient<SmartyStreets.USStreetApi.Client>((x) =>
+                {
+                    var client = new SmartyStreets.ClientBuilder(
+                        Configuration["smartystreets.authid"],
+                        Configuration["smartystreets.authtoken"])
+                        .BuildUsStreetApiClient();
+
+                return client;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

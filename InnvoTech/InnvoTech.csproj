@@ -18,4 +18,10 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="smartystreets-dotnet-sdk">
+      <HintPath>smartystreets-dotnet-sdk.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
