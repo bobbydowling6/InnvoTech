@@ -120,7 +120,7 @@ namespace InnvoTech.Controllers
             }
                 return View();
             }
-            public IActionResult Recipt()
+            public IActionResult Receipt()
             {
                 return View();
             }
