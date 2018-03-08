@@ -85,6 +85,7 @@ namespace InnvoTech
             }
             else
             {
+                //app.UseDeveloperExceptionPage();
                 app.UseExceptionHandler("/Home/Error");
             }
 
