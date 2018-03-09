@@ -180,6 +180,8 @@
 @section Scripts{ 
     <script type="text/javascript">
         $("#validateShipping").click((event) => {
+            $("#validateShipping").prop("disabled", "true");
+            $("#validating").show();
             event.preventDefault();
             event.stopPropagation();
             var shippingAddress = $("#ShippingAddress").val();
