@@ -78,7 +78,7 @@ namespace InnvoTech.Controllers
                 var result = await _signInManager.UserManager.ResetPasswordAsync(user, originalToken, password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Login", new { resetSuccessful = true });
+                    return RedirectToAction("Account", "Login", new { resetSuccessful = true });
                 }
                 else
                 {
