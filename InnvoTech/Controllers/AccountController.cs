@@ -87,7 +87,6 @@ namespace InnvoTech.Controllers
                         ModelState.AddModelError(error.Code, error.Description);
                     }
                 }
-               return RedirectToAction("Account", "Login");
             }
             return View();
 
