@@ -56,9 +56,9 @@
 {
     <div asp-validation-summary="All" class="alert alert-danger"></div>
 }
-    <form method="post" asp-action="Index" asp-controller="Delivery" novalidate>
+    <form method="post" asp-action="Index" asp-controller="Delivery" novalidate style="border:groove">
         <div class="row">
-            <div class="col">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="ShippingAddress">Shipping Address</label>
                     <input asp-for="ShippingAddress" class="@(ViewData.ModelState.ContainsKey("ShippingAddress") && ViewData.ModelState.First(x => x.Key == "ShippingAddress").Value.ValidationState == ModelValidationState.Invalid ? "form-control is-invalid" : "form-control")" />
@@ -101,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="BillingAddress">Billing Address</label>
                     <input asp-for="BillingAddress" class="@(ViewData.ModelState.ContainsKey("BillingAddress") && ViewData.ModelState.FirstOrDefault(x => x.Key == "BillingAddress").Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "form-control is-invalid" : "form-control")" required />
@@ -128,8 +128,7 @@
                     <span asp-validation-for="Date" class="invalid-feedback"></span>
                 </div>
                 </div>
-            <div class="row">
-                <div class="col">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="creditcardnumber">CreditCard Number</label>
                         <input asp-for="creditcardnumber" placeholder="4111111111111111" class="@(ViewData.ModelState.ContainsKey("creditcardnumber") && ViewData.ModelState.FirstOrDefault(x => x.Key == "creditcardnumber").Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "form-control is-invalid" : "form-control")" required />
@@ -146,7 +145,6 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="expirationmonth">Expiration Month</label>
-                        <div class="form-row">
                             <select asp-for="expirationmonth" class="@(ViewData.ModelState.ContainsKey("expirationmonth") && ViewData.ModelState.FirstOrDefault(x => x.Key == "expirationmonth").Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "form-control is-invalid" : "form-control")" required>
                                 <option value=""></option>
                                 <option value="01">01</option>
@@ -162,18 +160,15 @@
                                 <option value="11">11</option>
                                 <option value="12">12</option>
                             </select>
-                        </div>
                         <br />
                         <div class="form-group">
                             <label asp-for="expirationyear">Expiration Year</label>
-                            <div class="form-row">
                                 <select asp-for="expirationyear" asp-items="years" class="@(ViewData.ModelState.ContainsKey("expirationyear") && ViewData.ModelState.FirstOrDefault(x => x.Key == "expirationyear").Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "form-control is-invalid" : "form-control")" required></select>
-                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
-            </div>           
+            @*</div>*@           
      </div>
 </form>
 

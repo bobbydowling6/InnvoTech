@@ -110,7 +110,7 @@ namespace InnvoTech.Controllers
                     var result = await _braintreeGateway.Transaction.SaleAsync(saleRequest);
                     if (result.IsSuccess())
                     {
-                        return this.RedirectToAction("Index", "Home");
+                        return this.RedirectToAction("Receipt", "Delivery");
                     }
                     foreach (var error in result.Errors.All())
                     {
