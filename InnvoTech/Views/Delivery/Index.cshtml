@@ -85,7 +85,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-light" id="validateShipping">Validate Address</button>
+                        <button class="btn btn-info active" role="button" aria-pressed="true" id="validateShipping">Validate Address</button>
                         <progress id="validating" style="display:none"></progress>
                     </div>
                     <div class="col">
@@ -166,7 +166,7 @@
                                 <select asp-for="expirationyear" asp-items="years" class="@(ViewData.ModelState.ContainsKey("expirationyear") && ViewData.ModelState.FirstOrDefault(x => x.Key == "expirationyear").Value.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid ? "form-control is-invalid" : "form-control")" required></select>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn btn-success">Pay</button>
                 </div>
             @*</div>*@           
      </div>
