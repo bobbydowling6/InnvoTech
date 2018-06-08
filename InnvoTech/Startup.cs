@@ -80,16 +80,19 @@ namespace InnvoTech
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 //app.UseDeveloperExceptionPage();
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();
             app.UseMvc(routes =>
