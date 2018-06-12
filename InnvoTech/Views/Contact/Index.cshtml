@@ -3,7 +3,7 @@
     ViewData["Contact"] = "Index";
 }
 
-<form method="post">
+<form method="post" class="embed-responsive">
    @Html.AntiForgeryToken()
     <div class="jumbotron">
         <div class="form-row">
@@ -32,23 +32,23 @@
     </div>
 </form>
 
-<footer>
+<footer class="embed-responsive">
     <div class="row">
         <div class="col-md-4 col-sm-4">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2969.9746354490894!2d-87.63729158455843!3d41.89340257922096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2cb4f1ba4611%3A0xe2deb2c33d8f3766!2s222+W+Ontario+St%2C+Chicago%2C+IL+60654!5e0!3m2!1sen!2sus!4v1519335901801" width="350" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
         </div>
         <div class="col-md-5 col-sm-4">
-            <img src="~/images/logo.jpg" height="200" width="450"/>
+            <img src="~/images/logo.jpg" height="200" width="450" class="embed-responsive"/>
         </div>
         <div class="col-md-3 col-sm-4">
-            <address style="margin:auto">
+            <address style="margin:auto" class="embed-responsive">
             222 W. Ontario St<br />
             Chicago, IL 60654<br />
             <abbr title="Phone">Phone:</abbr>
             <tel>425.555.0100</tel>
         </address>
     <br />
-        <address>
+        <address class="embed-responsive">
             <strong>Support:</strong> <a href="mailto:Support@InnvoTech.com">Support@InnvoTech.com</a><br />
             <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@InnvoTech.com</a>
         </address>
