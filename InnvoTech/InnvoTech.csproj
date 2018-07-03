@@ -18,6 +18,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\lib\Fonts\DAYPBL__.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-Black.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-BlackItalic.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-Bold.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-BoldItalic.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-Italic.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-Light.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-LightItalic.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-Medium.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-MediumItalic.ttf" />
+    <None Include="wwwroot\lib\Fonts\Rubik-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="smartystreets-dotnet-sdk">
       <HintPath>smartystreets-dotnet-sdk.dll</HintPath>
     </Reference>
