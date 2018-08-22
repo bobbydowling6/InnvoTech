@@ -1,4 +1,7 @@
-﻿
+﻿h1, h2, h3 {
+    font-family: DAYPBL_;
+    color: #17a2b8;
+}
 
 a.nav-link {
     font-family: DAYPBL_;
