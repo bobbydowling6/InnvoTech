@@ -11,8 +11,8 @@
 
   <ItemGroup>
     <PackageReference Include="Braintree" Version="4.9.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.6" />
-    <PackageReference Include="Sendgrid" Version="9.10.0" />  
+    <PackageReference Include="Sendgrid" Version="9.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
