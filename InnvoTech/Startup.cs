@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using InnvoTech.Models;
+using SendGrid;
+using Braintree;
+using SmartyStreets;
 
 namespace InnvoTech
 {
@@ -25,38 +28,36 @@ namespace InnvoTech
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
             services.AddAntiforgery();
             services.AddSession();
 
-            //This will read the appsettings.json into an object which I can use throughout my app
-            //services.Configure<ConnectionStrings>(Configuration.GetSection("ConnectionStrings"));
-            //services.AddOptions();
-
-            //services.AddDbContext<IdentityDbContext>(opt =>
-            //opt.UseInMemoryDatabase("Identities")
-            //opt.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = BobTest; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"
-            //, sqlOptions => sqlOptions.MigrationsAssembly(this.GetType().Assembly.FullName))
-            //);
-            //opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //Added the configuration settings as "ConfigureServices" method through using the sql server context:
+            // Add DbContext
             services.AddDbContext<BobTestContext>(
-                opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                sqlOptions => sqlOptions.MigrationsAssembly(this.GetType().Assembly.FullName)));
+                opt => opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            // Add Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+            })
                 .AddEntityFrameworkStores<BobTestContext>()
                 .AddDefaultTokenProviders();
 
-            //Configure the service for dependency injection
-            services.AddTransient<SendGrid.SendGridClient>((x) =>
+            // Configure external service clients for dependency injection
+            services.AddTransient<SendGridClient>((x) =>
             {
-                return new SendGrid.SendGridClient(Configuration["sendgrid"]);
+                return new SendGridClient(Configuration["sendgrid"]);
             });
 
-            services.AddTransient<Braintree.BraintreeGateway>((x) =>
+            services.AddTransient<BraintreeGateway>((x) =>
             {
-                return new Braintree.BraintreeGateway(
+                return new BraintreeGateway(
                     Configuration["braintree.environment"],
                     Configuration["braintree.merchantid"],
                     Configuration["braintree.publickey"],
@@ -65,27 +66,25 @@ namespace InnvoTech
             });
 
             services.AddTransient<SmartyStreets.USStreetApi.Client>((x) =>
-                {
-                    var client = new SmartyStreets.ClientBuilder(
-                        Configuration["smartystreets.authid"],
-                        Configuration["smartystreets.authtoken"])
-                        .BuildUsStreetApiClient();
+            {
+                var client = new ClientBuilder(
+                    Configuration["smartystreets.authid"],
+                    Configuration["smartystreets.authtoken"])
+                    .BuildUsStreetApiClient();
 
                 return client;
-                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, BobTestContext Context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env != null && "Development".Equals(env.EnvironmentName, StringComparison.OrdinalIgnoreCase))
             {
-                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                //app.UseDeveloperExceptionPage();
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
@@ -94,15 +93,26 @@ namespace InnvoTech
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+            
+            app.UseRouting();
+            
             app.UseAuthentication();
-            app.UseMvc(routes =>
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
-            //I'm going to put my initialization logic in a seperate class
-            DbInitializer.Initialize(Context);
+
+            // Initialize database
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<BobTestContext>();
+                DbInitializer.Initialize(context);
+            }
         }
     }
 }

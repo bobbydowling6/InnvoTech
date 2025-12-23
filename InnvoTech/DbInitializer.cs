@@ -105,7 +105,7 @@ namespace InnvoTech
                     Rating = 5,
                     Body = "This Product is Awesome!!",
                     IsApproved = true,
-                    products = context.Products.First()  //I'm going to add this review to the first product in the database
+                    products = context.Products.OrderBy(p => p.Id).First()  //I'm going to add this review to the first product in the database
                 },
                 new Review
                 {
@@ -164,7 +164,7 @@ namespace InnvoTech
                     Rating = 1,
                     Body = "I hate this product, I have no idea why I bought this stupid thing, maybe to try to look cool in front of my peers but I don't see the point on owning one of these things while my Iphone can do exactly the same thing!!!",
                     IsApproved = true,
-                    products = context.Products.Last()//I'm going to add this review to the last product in the database
+                    products = context.Products.OrderBy(p => p.Id).Last()//I'm going to add this review to the last product in the database
                 });
                 context.SaveChanges();
             }
